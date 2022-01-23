@@ -1,4 +1,4 @@
-# sealedsecret-deployment
+# Sealed Secret
 ## Instalación
 ```shell
 helm repo add sealed-secrets https://bitnami-labs.github.io/sealed-secrets
