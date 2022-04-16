@@ -1,5 +1,11 @@
 # Instalación de Sealed Secret
 
+## Funcionamiento
+```mermaid
+graph LR
+    A[Kind:SealedSecret] -->|Genera| B[Kind: Secret]
+```
+
 ## Instalación de kubeseal - Herramienta necesaria en el cliente para poder crear sealed secret
 
 ```
@@ -18,17 +24,17 @@ helm install sealed-secrets-controller sealed-secrets/sealed-secrets -n kube-sys
 ```
 ## Creando un Sealed Secret
 
-#### Creamos un secret en modo dry-run para que no genere el secret en kubernetes, luego lo ciframos con la clave publica de sealed
+#### Creamos un secret en modo dry-run para que no genere el secret en kubernetes, luego lo ciframos con la clave publica de sealed, y finalmente se genera un archivo de tipo SealedSecret.
 ```
-kubectl create secret generic secret-name --dry-run --from-literal=foo=bar -o yaml |  kubeseal --format yaml > mysealedsecret.yaml
+kubectl create secret generic secret-name --dry-run=client --from-literal=foo=bar -o yaml |  kubeseal --format yaml > mysealedsecret.yaml
 ```
-#### Para obtener la clave publica de sealed secret
+#### Para obtener la clave publica de sealed secret (no seria importante)
 ```
 kubeseal --fetch-cert > mycert.pem
 ```
-#### Finalmente creamos el secret
+#### Finalmente aplicacmos el SealedSecret
 ```
-kubectl create -f mysealedsecret.yaml
+kubectl apply -f mysealedsecret.yaml
 ```
 #### Vemos que se creo el secret con los datos publicados
 ```
